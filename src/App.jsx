@@ -8,8 +8,11 @@ export default function App() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [darkMode, setDarkMode] = useState(true);
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       if (isLogin) {
         const res = await axios.post("http://localhost:3001/signin", {
@@ -30,88 +33,146 @@ export default function App() {
     } catch (err) {
       setMessage(err.response?.data?.message || "Error occurred");
     }
+    setLoading(false);
   };
 
   if (user) {
     return (
-      <div style={{ textAlign: "center", padding: "50px" }}>
-        <h1>✅ {message}</h1>
-        <p>Logged in as: {user.email}</p>
-        <button
-          onClick={() => {
-            setUser(null);
-            setMessage("");
-          }}
+      <div
+        className={`min-h-screen flex items-start sm:items-center justify-center px-4 pt-6 sm:pt-0 ${darkMode ? "bg-gray-900" : "bg-gray-100"}`}
+      >
+        <div
+          className={`p-8 sm:p-10 rounded-2xl text-center shadow-xl w-full max-w-sm ${darkMode ? "bg-gray-800" : "bg-white"}`}
         >
-          Logout
-        </button>
+          <div className="text-5xl sm:text-6xl mb-4">✅</div>
+          <h1
+            className={`text-xl sm:text-2xl font-bold mb-2 ${darkMode ? "text-white" : "text-gray-900"}`}
+          >
+            {message}
+          </h1>
+          <p
+            className={`mb-6 text-sm sm:text-base ${darkMode ? "text-gray-400" : "text-gray-500"}`}
+          >
+            Logged in as: {user.email}
+          </p>
+          <button
+            onClick={() => {
+              setUser(null);
+              setMessage("");
+              setEmail("");
+              setPassword("");
+            }}
+            className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition text-sm sm:text-base"
+          >
+            Logout
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
     <div
-      style={{
-        maxWidth: "400px",
-        margin: "100px auto",
-        padding: "30px",
-        border: "1px solid #ddd",
-        borderRadius: "10px",
-      }}
+      className={`min-h-screen flex items-center justify-center px-4 py-4 sm:py-4 ${darkMode ? "bg-gray-900" : "bg-gray-100"}`}
     >
-      <h2>{isLogin ? "Sign In" : "Sign Up"}</h2>
-      {!isLogin && (
-        <input
-          placeholder="Full Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-        />
-      )}
-      <input
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-      />
-      <input
-        placeholder="Password"
-        type="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
-      />
-      <button
-        onClick={handleSubmit}
-        style={{
-          width: "100%",
-          padding: "10px",
-          background: "#2563eb",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
+      <div
+        className={`p-6 sm:p-10 rounded-2xl shadow-xl w-full max-w-md ${darkMode ? "bg-gray-800" : "bg-white"}`}
       >
-        {isLogin ? "Sign In" : "Sign Up"}
-      </button>
-      {message && <p style={{ color: "red", marginTop: "10px" }}>{message}</p>}
-      <p
-        onClick={() => {
-          setIsLogin(!isLogin);
-          setMessage("");
-        }}
-        style={{
-          textAlign: "center",
-          cursor: "pointer",
-          color: "#2563eb",
-          marginTop: "15px",
-        }}
-      >
-        {isLogin
-          ? "Don't have an account? Sign Up"
-          : "Already have an account? Sign In"}
-      </p>
+        {/* Dark mode toggle */}
+        <div className="flex justify-end mb-4">
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className={`px-3 py-1 rounded-full text-xs sm:text-sm ${darkMode ? "bg-gray-700 text-yellow-400" : "bg-gray-200 text-gray-700"}`}
+          >
+            {darkMode ? "☀️ Light" : "🌙 Dark"}
+          </button>
+        </div>
+
+        {/* Header */}
+        <h2
+          className={`text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-8 ${darkMode ? "text-white" : "text-gray-900"}`}
+        >
+          {isLogin ? "Sign In" : "Sign Up"}
+        </h2>
+
+        {/* Name field (signup only) */}
+        {!isLogin && (
+          <div className="mb-4">
+            <label
+              className={`text-xs sm:text-sm mb-1 block ${darkMode ? "text-gray-400" : "text-gray-600"}`}
+            >
+              Full Name
+            </label>
+            <input
+              placeholder="Jesse Kit Ocampo"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className={`w-full p-3 rounded-lg border focus:outline-none focus:border-blue-500 text-sm sm:text-base ${darkMode ? "bg-gray-700 text-white border-gray-600" : "bg-gray-50 text-gray-900 border-gray-300"}`}
+            />
+          </div>
+        )}
+
+        {/* Email */}
+        <div className="mb-4">
+          <label
+            className={`text-xs sm:text-sm mb-1 block ${darkMode ? "text-gray-400" : "text-gray-600"}`}
+          >
+            Email
+          </label>
+          <input
+            placeholder="kit@example.com"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={`w-full p-3 rounded-lg border focus:outline-none focus:border-blue-500 text-sm sm:text-base ${darkMode ? "bg-gray-700 text-white border-gray-600" : "bg-gray-50 text-gray-900 border-gray-300"}`}
+          />
+        </div>
+
+        {/* Password */}
+        <div className="mb-6">
+          <label
+            className={`text-xs sm:text-sm mb-1 block ${darkMode ? "text-gray-400" : "text-gray-600"}`}
+          >
+            Password
+          </label>
+          <input
+            placeholder="••••••••"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={`w-full p-3 rounded-lg border focus:outline-none focus:border-blue-500 text-sm sm:text-base ${darkMode ? "bg-gray-700 text-white border-gray-600" : "bg-gray-50 text-gray-900 border-gray-300"}`}
+          />
+        </div>
+
+        {/* Error message */}
+        {message && !user && (
+          <p className="text-red-400 text-xs sm:text-sm mb-4 text-center">
+            {message}
+          </p>
+        )}
+
+        {/* Submit button */}
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition font-medium disabled:opacity-50 text-sm sm:text-base"
+        >
+          {loading ? "Loading..." : isLogin ? "Sign In" : "Sign Up"}
+        </button>
+
+        {/* Toggle */}
+        <p
+          onClick={() => {
+            setIsLogin(!isLogin);
+            setMessage("");
+          }}
+          className={`text-center mt-5 sm:mt-6 cursor-pointer hover:text-blue-400 transition text-xs sm:text-sm ${darkMode ? "text-gray-400" : "text-gray-500"}`}
+        >
+          {isLogin
+            ? "Don't have an account? Sign Up"
+            : "Already have an account? Sign In"}
+        </p>
+      </div>
     </div>
   );
 }
