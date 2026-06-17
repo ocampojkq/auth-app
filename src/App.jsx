@@ -84,7 +84,7 @@ export default function App() {
             onClick={() => setDarkMode(!darkMode)}
             className={`px-3 py-1 rounded-full text-xs sm:text-sm ${darkMode ? "bg-gray-700 text-yellow-400" : "bg-gray-200 text-gray-700"}`}
           >
-            {darkMode ? "☀️ Light" : "🌙 Dark"}
+            {darkMode ? "☀️" : "🌙"}
           </button>
         </div>
 
