@@ -44,7 +44,7 @@ export default function App() {
         <div
           className={`p-8 sm:p-10 rounded-2xl text-center shadow-xl w-full max-w-sm ${darkMode ? "bg-gray-800" : "bg-white"}`}
         >
-          <div className="text-5xl sm:text-6xl mb-4">✅</div>
+          <div className="text-5xl sm:text-6xl mb-4"></div>
           <h1
             className={`text-xl sm:text-2xl font-bold mb-2 ${darkMode ? "text-white" : "text-gray-900"}`}
           >
@@ -62,7 +62,7 @@ export default function App() {
               setEmail("");
               setPassword("");
             }}
-            className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition text-sm sm:text-base"
+            className="bg-red-400 text-white px-6 py-2 rounded-lg hover:bg-red-500 transition text-sm sm:text-base"
           >
             Logout
           </button>
